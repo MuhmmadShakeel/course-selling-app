@@ -1,5 +1,6 @@
 import { Course } from "../Model/coursemodel.js";
 import { v2 as cloudinary } from 'cloudinary';
+import Purchase from "../Model/purchasemodel.js";
 import fs from 'fs';
 
 export const createCourse = async (req, res) => {
@@ -50,3 +51,83 @@ export const createCourse = async (req, res) => {
     return res.status(500).json({ error: "Server error" });
   }
 };
+
+export const updateCourse=async(req,res)=>{
+  const {courseId} =req.params;
+  const {title,description,price,image}=req.body
+  try {
+    const updatedCourse=await Course.findByIdAndUpdate({_id:courseId},{
+      title,
+      description,
+      price,
+      image: {
+        public_id: image?.public_id,
+        url: image?.secure_url,
+      }
+    })
+          return await res.status(200).json({message:"course updated successfully",updatedCourse})
+  } catch (error) {
+    res.status(401).json({message:"error in updating the course"})
+    console.log("error in fetching the data")
+  }
+}
+
+export const deleteCourse=async(req,res)=>{
+  const {courseId}=req.params;
+  try {
+    const deleteCourse=await Course.findByIdAndDelete({_id:courseId})
+    if(!deleteCourse){
+    return res.status(400).json({message:"course not deleted"})
+    }
+    return res.status(200).json({message:"course deleted successfully"})
+  } catch (error) {
+    console.log("server error")
+    return res.status(500).json({error:"server error"})
+  }
+}
+
+export const getCourses=async(req,res)=>{
+  try {
+    const courses=await Course.find({})
+    if(!courses){
+      return res.ststus(201).json({message:"no course availabe"})
+    }
+    return res.status(200).json({courses})
+  } catch (error) {
+    return res.status(500).json({message:"server error"})
+  }
+}
+
+export const getcourseDetail=async(req,res)=>{
+  const {courseId}=req.params
+  try {
+      const courseDetail=await Course.findById(courseId)
+      if(!courseDetail){
+     return res.status(401).json({message:"course details not found"})
+      }
+      return res.status(200).json({courseDetail})
+  } catch (error) {
+    return res.status(500).json({error:"server error"})
+  }
+}
+
+export const buyCourses=async(req,res)=>{
+    const {userId}=req;
+    const {courseId}=req.params
+    try {
+      const course=await Course.findById(courseId)
+      if(!course){
+        return res.status(404).json({error:"course not found"})
+      }
+      const existingUser=await Purchase.findOne({courseId,userId})
+      if(existingUser){
+        return res.status(400).json({error:"you have already buy this course"})
+      }
+      const newPurchase=new Purchase({userId,courseId})
+      newPurchase.save()
+      return res.status(200).json({message:"Course Purchase Successfully",newPurchase})
+
+    } catch (error) {
+      return res.status(400).json({error:"error in course buying"})
+    }
+}

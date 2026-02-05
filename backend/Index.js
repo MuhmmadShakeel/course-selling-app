@@ -3,8 +3,12 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import courseRoute from './Routes/courserouter.js'
 import { v2 as cloudinary } from 'cloudinary';
+import userRoute from './Routes/userrouter.js';
+import adminRoute from './Routes/adminroutes.js';
+import cookieParser from 'cookie-parser';
 dotenv.config();
 const app = express();
+app.use(cookieParser())
 app.use(express.json());
 // Using multer via route-level middleware; do not use express-fileupload globally
 
@@ -21,6 +25,8 @@ try {
 
 // definig routes
 app.use('/api/v1/course',courseRoute)
+app.use('/api/v1/user',userRoute)
+app.use('/api/v1/admin',adminRoute)
 
 //cloudinary configuration code
     cloudinary.config({ 
