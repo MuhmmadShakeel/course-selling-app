@@ -4,6 +4,7 @@ import Purchase from "../Model/purchasemodel.js";
 import fs from 'fs';
 
 export const createCourse = async (req, res) => {
+const adminId = req.adminId;
   const { title, description, price } = req.body;
   try {
     if (!title || !description || !price) {
@@ -42,6 +43,7 @@ export const createCourse = async (req, res) => {
         public_id: cloud_response.public_id,
         url: cloud_response.secure_url,
       },
+  createrId: adminId
     };
 
     const course = await Course.create(courseData);
@@ -53,10 +55,11 @@ export const createCourse = async (req, res) => {
 };
 
 export const updateCourse=async(req,res)=>{
+  const adminId=req.adminId
   const {courseId} =req.params;
   const {title,description,price,image}=req.body
   try {
-    const updatedCourse=await Course.findByIdAndUpdate({_id:courseId},{
+    const updatedCourse=await Course.findByIdAndUpdate({_id:courseId,createrId:adminId},{
       title,
       description,
       price,
@@ -65,6 +68,9 @@ export const updateCourse=async(req,res)=>{
         url: image?.secure_url,
       }
     })
+    if(!updatedCourse){
+                return await res.status(404).json({message:"course not found"})
+    }
           return await res.status(200).json({message:"course updated successfully",updatedCourse})
   } catch (error) {
     res.status(401).json({message:"error in updating the course"})
@@ -73,11 +79,12 @@ export const updateCourse=async(req,res)=>{
 }
 
 export const deleteCourse=async(req,res)=>{
+const adminId = req.adminId;
   const {courseId}=req.params;
   try {
-    const deleteCourse=await Course.findByIdAndDelete({_id:courseId})
+    const deleteCourse=await Course.findByIdAndDelete({_id:courseId,createrId:adminId})
     if(!deleteCourse){
-    return res.status(400).json({message:"course not deleted"})
+    return res.status(400).json({message:"course not found"})
     }
     return res.status(200).json({message:"course deleted successfully"})
   } catch (error) {

@@ -50,7 +50,7 @@ if(!comparedpassword){
 }
 
 const token=jwt.sign({
-    id:admin._id,
+    id:adminexists._id,
 },    config.JWT_ADMIN_PASSWORD,
 {expiresIn:"3d"}
 );

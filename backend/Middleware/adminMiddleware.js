@@ -13,6 +13,7 @@ export const adminMiddleware = (req, res, next) => {
     req.adminId = decoded.id;
     next();
   } catch (error) {
+        console.log("only admin can create course")
     return res.status(401).json({ message: error.message });
   }
 };
