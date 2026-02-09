@@ -8,7 +8,7 @@ courseRoute.post("/create-course",upload.single("image"),adminMiddleware, create
 courseRoute.put("/update-course/:courseId",upload.single("image"),adminMiddleware,updateCourse); // 👈 field name must match frontend
 courseRoute.delete("/delete-course/:courseId",adminMiddleware,deleteCourse); // 👈 field name must match frontend
 courseRoute.get("/courses",getCourses); // 👈 field name must match frontend
-courseRoute.get("/:courseId",getcourseDetail); // 👈 field name must match frontend
+courseRoute.get("/:id", getcourseDetail); // 👈 field name must match frontend
 courseRoute.get("/buy/:courseId",userMiddleware, buyCourses); // 👈 field name must match frontend
 
 export default courseRoute;

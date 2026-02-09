@@ -6,7 +6,6 @@ export const adminMiddleware = (req, res, next) => {
   if (!authHeader?.startsWith("Bearer ")) {
     return res.status(401).json({ message: "No token found" });
   }
-
   const token = authHeader.split(" ")[1];
   try {
     const decoded = jwt.verify(token,config.JWT_ADMIN_PASSWORD);

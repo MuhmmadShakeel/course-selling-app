@@ -40,11 +40,11 @@ res.status(201).json({message:"User Register Successfully",user})
 export const Login=async(req,res)=>{
 const {email,password}=req.body
 if(!email || !password){
-    return res.json({message:"all fields require"})
+    return res.status(401).json({message:"all fields require"})
 }
 const userexists=await User.findOne({email})
 if(!userexists){
-    return res.json({message:"User Not Found"})
+    return res.status(404).json({message:"User Not Found"})
 }
 const comparedpassword= await comparePassword(password,userexists.password)
 if(!comparedpassword){

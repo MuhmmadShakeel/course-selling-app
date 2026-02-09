@@ -105,18 +105,22 @@ export const getCourses=async(req,res)=>{
   }
 }
 
-export const getcourseDetail=async(req,res)=>{
-  const {courseId}=req.params
+export const getcourseDetail = async (req, res) => {
+  const { id } = req.params; // 🔥 FIXED
+
   try {
-      const courseDetail=await Course.findById(courseId)
-      if(!courseDetail){
-     return res.status(401).json({message:"course details not found"})
-      }
-      return res.status(200).json({courseDetail})
+    const courseDetail = await Course.findById(id);
+
+    if (!courseDetail) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    return res.status(200).json({ course: courseDetail }); // 🔥 FIXED
   } catch (error) {
-    return res.status(500).json({error:"server error"})
+    return res.status(500).json({ error: "Server error" });
   }
-}
+};
+
 
 export const buyCourses=async(req,res)=>{
     const {userId}=req;
@@ -138,3 +142,5 @@ export const buyCourses=async(req,res)=>{
       return res.status(400).json({error:"error in course buying"})
     }
 }
+
+

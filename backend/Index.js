@@ -6,10 +6,19 @@ import { v2 as cloudinary } from 'cloudinary';
 import userRoute from './Routes/userrouter.js';
 import adminRoute from './Routes/adminroutes.js';
 import cookieParser from 'cookie-parser';
+import cors from 'cors'
+import { url } from 'zod';
 dotenv.config();
 const app = express();
 app.use(cookieParser())
 app.use(express.json());
+app.use(cors
+    ({
+        origin:"http://localhost:5173",
+        credentials:true
+    })
+)
+    
 // Using multer via route-level middleware; do not use express-fileupload globally
 
 //port 
@@ -24,7 +33,7 @@ try {
 }
 
 // definig routes
-app.use('/api/v1/course',courseRoute)
+app.use('/api/v1/courses',courseRoute)
 app.use('/api/v1/user',userRoute)
 app.use('/api/v1/admin',adminRoute)
 
