@@ -66,6 +66,7 @@ res.cookie("jwt",token,cookieeOptions)
     return await res.status(200).json({message:"Login successfully",userexists,token})
 }
 
+
 export const Logout=(req,res)=>{
     try {
         res.clearCookie("jwt");
@@ -74,6 +75,7 @@ export const Logout=(req,res)=>{
         return res.status(500).json({error:"error in logout"})
     }
 }
+
 
 export const PurchaseCourse=async(req,res)=>{
 const userId=req.userId;

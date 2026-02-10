@@ -39,12 +39,13 @@ const { data, isLoading, isError } =
         <p className="text-gray-600 mt-2 text-sm">{description}</p>
         <p className="mt-3 font-bold text-blue-600">${price}</p>
 
-        <button 
-        onClick={()=>navigate('/paynow')
-        }
-        className="mt-4 w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md transition">
-          Enroll Now
-        </button>
+  <button
+  onClick={() => navigate(`/courses/${id}`)}
+  className="mt-4 w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md transition"
+>
+  Enroll Now
+</button>
+
       </div>
     </div>
   );

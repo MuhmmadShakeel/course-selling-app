@@ -1,5 +1,4 @@
 import React from "react";
-
 function Payment() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-600">
@@ -67,5 +66,4 @@ function Payment() {
     </div>
   );
 }
-
 export default Payment;
